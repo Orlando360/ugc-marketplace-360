@@ -9,8 +9,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "#0A0A0A",
+        surface: "#111111",
+        "surface-2": "#1A1A1A",
+        gold: "#F5C518",
+        "gold-dim": "#C9A214",
+      },
+      fontFamily: {
+        syne: ["Syne", "sans-serif"],
+        sans: ["DM Sans", "sans-serif"],
       },
     },
   },
