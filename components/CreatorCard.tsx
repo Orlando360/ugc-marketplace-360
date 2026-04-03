@@ -1,26 +1,38 @@
 'use client'
 
 import Image from 'next/image'
+import { useState } from 'react'
 import type { Creator } from '@/types'
 
-function fmt(n: number) {
-  if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M`
-  if (n >= 1000) return `${(n / 1000).toFixed(0)}K`
-  return String(n)
+function parseFollowers(val: unknown): string {
+  if (typeof val === 'number') {
+    if (val >= 1000000) return `${(val / 1000000).toFixed(1)}M`
+    if (val >= 1000) return `${(val / 1000).toFixed(0)}K`
+    return String(val)
+  }
+  // Already formatted string like "46K"
+  return String(val || '0')
+}
+
+function parseEngagement(val: unknown): number {
+  if (typeof val === 'number') return val
+  // String like "6.2%"
+  const num = parseFloat(String(val).replace('%', ''))
+  return isNaN(num) ? 0 : num
 }
 
 function calcScore(creator: Creator, searchTerm: string): number {
+  const eng = parseEngagement(creator.engagement)
   if (!searchTerm.trim()) {
-    const engScore = Math.min(creator.engagement * 8, 40)
-    const base = 55
-    return Math.round(base + engScore)
+    const engScore = Math.min(eng * 8, 40)
+    return Math.round(55 + engScore)
   }
   const term = searchTerm.toLowerCase()
   let score = 50
-  if (creator.category.toLowerCase().includes(term)) score += 25
+  if (creator.category?.toLowerCase().includes(term)) score += 25
   const tagMatches = creator.tags?.filter(t => t.toLowerCase().includes(term) || term.includes(t.toLowerCase())).length ?? 0
   score += tagMatches * 10
-  if (creator.name.toLowerCase().includes(term)) score += 10
+  if (creator.name?.toLowerCase().includes(term)) score += 10
   if (creator.bio?.toLowerCase().includes(term)) score += 8
   return Math.min(score, 99)
 }
@@ -33,6 +45,11 @@ interface Props {
 
 export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props) {
   const score = calcScore(creator, searchTerm)
+  const [imgError, setImgError] = useState(false)
+
+  const handle = creator.handle?.replace(/^@/, '').trim()
+  const photoSrc = creator.photo_url || (!imgError && handle ? `https://unavatar.io/instagram/${handle}` : null)
+  const engDisplay = parseEngagement(creator.engagement)
 
   return (
     <div
@@ -42,31 +59,39 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
     >
       {/* Photo / Emoji header */}
       <div className="creator-photo-wrap" style={{ height: '220px', background: '#F0E6D3' }}>
-        {(() => {
-          const handle = creator.handle?.replace(/^@/, '').trim()
-          const imgSrc = creator.photo_url || (handle ? `https://unavatar.io/instagram/${handle}` : null)
-          return imgSrc ? (
+        {photoSrc && !imgError ? (
+          creator.photo_url ? (
             <Image
-              src={imgSrc}
+              src={creator.photo_url}
               alt={creator.name}
               fill
               style={{ objectFit: 'cover' }}
               sizes="(max-width: 768px) 100vw, 380px"
-              unoptimized={!creator.photo_url}
             />
           ) : (
-            <div style={{
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '5rem',
-              background: 'linear-gradient(135deg, #F0E6D3 0%, #E8DCCC 100%)',
-            }}>
-              {creator.emoji}
-            </div>
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={photoSrc}
+              alt={creator.name}
+              onError={() => setImgError(true)}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
           )
-        })()}
+        ) : (
+          <div style={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'linear-gradient(135deg, #F0E6D3 0%, #E8DCCC 100%)',
+          }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '0.5rem' }}>{creator.emoji || '✨'}</span>
+            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: '0.9rem', color: '#8B5E3C', fontWeight: 700 }}>
+              {creator.name?.split(' ')[0]}
+            </span>
+          </div>
+        )}
 
         {/* Hover overlay */}
         <div className="creator-photo-overlay">
@@ -132,7 +157,9 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
             <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1rem', color: '#3D2314', lineHeight: 1.2 }}>
               {creator.name}
             </h3>
-            <p style={{ color: '#B8977A', fontSize: '0.78rem', marginTop: '0.1rem', fontFamily: "'Inter', sans-serif" }}>@{creator.handle}</p>
+            <p style={{ color: '#B8977A', fontSize: '0.78rem', marginTop: '0.1rem', fontFamily: "'Inter', sans-serif" }}>
+              {handle ? `@${handle}` : ''}
+            </p>
           </div>
           {/* Match score */}
           <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '0.75rem' }}>
@@ -151,8 +178,8 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
         {/* Stats */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '1rem' }}>
           {[
-            { label: 'Seguidores', value: fmt(creator.followers) },
-            { label: 'Engagement', value: `${creator.engagement}%` },
+            { label: 'Seguidores', value: parseFollowers(creator.followers) },
+            { label: 'Engagement', value: `${engDisplay}%` },
           ].map((s) => (
             <div key={s.label} style={{
               background: '#FAF7F2',
@@ -179,7 +206,7 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
           <div>
             <span style={{ color: '#B8977A', fontSize: '0.72rem', fontFamily: "'Inter', sans-serif" }}>Desde</span>
             <div className="font-mono-metric" style={{ fontWeight: 400, fontSize: '1.15rem', color: '#3D2314', letterSpacing: '-0.02em' }}>
-              ${creator.price.toLocaleString('es-CO')}
+              ${(creator.price || 0).toLocaleString('es-CO')}
             </div>
           </div>
           <button
