@@ -4,19 +4,22 @@ import Image from 'next/image'
 import { useState } from 'react'
 import type { Creator } from '@/types'
 
+function diceBearUrl(name: string): string {
+  const seed = encodeURIComponent(name || 'creator')
+  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${seed}&backgroundColor=F0E6D3`
+}
+
 function parseFollowers(val: unknown): string {
   if (typeof val === 'number') {
     if (val >= 1000000) return `${(val / 1000000).toFixed(1)}M`
     if (val >= 1000) return `${(val / 1000).toFixed(0)}K`
     return String(val)
   }
-  // Already formatted string like "46K"
   return String(val || '0')
 }
 
 function parseEngagement(val: unknown): number {
   if (typeof val === 'number') return val
-  // String like "6.2%"
   const num = parseFloat(String(val).replace('%', ''))
   return isNaN(num) ? 0 : num
 }
@@ -46,10 +49,11 @@ interface Props {
 export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props) {
   const score = calcScore(creator, searchTerm)
   const [imgError, setImgError] = useState(false)
-
-  const handle = creator.handle?.replace(/^@/, '').trim()
-  const photoSrc = creator.photo_url || (!imgError && handle ? `https://unavatar.io/instagram/${handle}` : null)
   const engDisplay = parseEngagement(creator.engagement)
+  const handle = creator.handle?.replace(/^@/, '').trim()
+
+  const hasRealPhoto = !!creator.photo_url
+  const avatarUrl = diceBearUrl(creator.name)
 
   return (
     <div
@@ -57,40 +61,30 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
       onClick={onClick}
       style={{ cursor: 'pointer', overflow: 'hidden' }}
     >
-      {/* Photo / Emoji header */}
+      {/* Photo header */}
       <div className="creator-photo-wrap" style={{ height: '220px', background: '#F0E6D3' }}>
-        {photoSrc && !imgError ? (
-          creator.photo_url ? (
-            <Image
-              src={creator.photo_url}
-              alt={creator.name}
-              fill
-              style={{ objectFit: 'cover' }}
-              sizes="(max-width: 768px) 100vw, 380px"
-            />
-          ) : (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
-              src={photoSrc}
-              alt={creator.name}
-              onError={() => setImgError(true)}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          )
+        {hasRealPhoto && !imgError ? (
+          <Image
+            src={creator.photo_url!}
+            alt={creator.name}
+            fill
+            style={{ objectFit: 'cover' }}
+            sizes="(max-width: 768px) 100vw, 380px"
+            onError={() => setImgError(true)}
+          />
         ) : (
-          <div style={{
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'linear-gradient(135deg, #F0E6D3 0%, #E8DCCC 100%)',
-          }}>
-            <span style={{ fontSize: '3.5rem', marginBottom: '0.5rem' }}>{creator.emoji || '✨'}</span>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: '0.9rem', color: '#8B5E3C', fontWeight: 700 }}>
-              {creator.name?.split(' ')[0]}
-            </span>
-          </div>
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={avatarUrl}
+            alt={creator.name}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              padding: '1.5rem',
+              background: 'linear-gradient(135deg, #F0E6D3 0%, #E8DCCC 100%)',
+            }}
+          />
         )}
 
         {/* Hover overlay */}
@@ -151,7 +145,6 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
 
       {/* Card body */}
       <div style={{ padding: '1.1rem 1.25rem 1.25rem' }}>
-        {/* Name + handle */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.6rem' }}>
           <div>
             <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1rem', color: '#3D2314', lineHeight: 1.2 }}>
@@ -161,7 +154,6 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
               {handle ? `@${handle}` : ''}
             </p>
           </div>
-          {/* Match score */}
           <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '0.75rem' }}>
             <div className="font-mono-metric" style={{ fontWeight: 400, fontSize: '1.1rem', color: score >= 80 ? '#3D2314' : '#8B5E3C' }}>
               {score}%
@@ -170,12 +162,10 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
           </div>
         </div>
 
-        {/* Score bar */}
         <div className="score-bar" style={{ marginBottom: '1rem' }}>
           <div className="score-bar-fill" style={{ width: `${score}%` }} />
         </div>
 
-        {/* Stats */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', marginBottom: '1rem' }}>
           {[
             { label: 'Seguidores', value: parseFollowers(creator.followers) },
@@ -194,14 +184,12 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
           ))}
         </div>
 
-        {/* Tags */}
         <div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap', marginBottom: '1.1rem' }}>
           {creator.tags?.slice(0, 3).map((tag) => (
             <span key={tag} className="tag">#{tag}</span>
           ))}
         </div>
 
-        {/* Price + CTA */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <span style={{ color: '#B8977A', fontSize: '0.72rem', fontFamily: "'Inter', sans-serif" }}>Desde</span>
