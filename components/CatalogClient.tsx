@@ -64,41 +64,49 @@ export default function CatalogClient({ creators }: Props) {
   })
 
   return (
-    <div style={{ background: '#FAFAF8', minHeight: '100vh' }}>
+    <div style={{ background: '#FAF7F2', minHeight: '100vh' }}>
 
       {/* ── Hero ── */}
       <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '4rem 1.5rem 3rem' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '2rem', alignItems: 'start' }}>
           <div>
-            <p style={{
-              fontFamily: 'DM Sans',
-              fontSize: '0.78rem',
-              fontWeight: 500,
-              color: '#A8A8A4',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              marginBottom: '1rem',
+            {/* Badge */}
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              background: '#F0E6D3',
+              border: '1px solid rgba(196,135,58,0.3)',
+              borderRadius: '100px',
+              padding: '0.3rem 0.9rem',
+              marginBottom: '1.25rem',
             }}>
-              Creadoras UGC verificadas · Colombia
-            </p>
+              <span style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: '0.72rem',
+                fontWeight: 600,
+                color: '#8B5E3C',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+              }}>
+                Creadoras UGC verificadas · Colombia
+              </span>
+            </div>
+
             <h1 style={{
-              fontFamily: 'Syne',
-              fontWeight: 800,
+              fontFamily: "'Playfair Display', serif",
+              fontWeight: 700,
               fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-              color: '#0A0A0A',
+              color: '#3D2314',
               lineHeight: 1.0,
-              letterSpacing: '-0.03em',
+              letterSpacing: '-0.02em',
               marginBottom: '1.25rem',
             }}>
               Contenido que<br />
-              <span style={{
-                background: 'linear-gradient(90deg, #0A0A0A 0%, #6B6B6B 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}>convierte.</span>
+              <span style={{ color: '#C4873A' }}>convierte.</span>
             </h1>
             <p style={{
-              color: '#6B6B6B',
+              fontFamily: "'Inter', sans-serif",
+              color: '#8B5E3C',
               fontSize: '1rem',
               lineHeight: 1.7,
               maxWidth: '460px',
@@ -106,23 +114,24 @@ export default function CatalogClient({ creators }: Props) {
             }}>
               Conecta con creadoras auténticas. La IA te ayuda a encontrar el match perfecto para tu marca.
             </p>
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
               <button
                 onClick={() => setShowMatch(true)}
-                className="btn-gold"
+                className="btn-caramel"
                 style={{ padding: '0.75rem 1.5rem', borderRadius: '10px', fontSize: '0.9rem' }}
               >
-                ✦ Encontrar mi creadora ideal
+                Encontrar mi creadora ideal
               </button>
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '0.5rem',
-                color: '#A8A8A4',
+                color: '#8B5E3C',
                 fontSize: '0.82rem',
+                fontFamily: "'Inter', sans-serif",
               }}>
-                <span style={{ color: '#F5C518' }}>●</span>
-                {creators.length} creadoras activas
+                <span className="pulse-dot" style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: '#C4873A' }} />
+                <span className="font-mono-metric">{creators.length}</span> creadoras activas
               </div>
             </div>
           </div>
@@ -143,14 +152,14 @@ export default function CatalogClient({ creators }: Props) {
                 { n: '48h', label: 'Entrega express' },
               ].map((s) => (
                 <div key={s.label} style={{
-                  background: '#fff',
-                  border: '1px solid #EBEBEB',
+                  background: '#F0E6D3',
+                  border: '1px solid #E8DCCC',
                   borderRadius: '14px',
                   padding: '1rem',
                   textAlign: 'center',
                 }}>
-                  <div style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.5rem', color: '#0A0A0A', letterSpacing: '-0.03em' }}>{s.n}</div>
-                  <div style={{ color: '#A8A8A4', fontSize: '0.72rem', marginTop: '0.1rem' }}>{s.label}</div>
+                  <div className="font-mono-metric" style={{ fontWeight: 400, fontSize: '1.5rem', color: '#3D2314', letterSpacing: '-0.03em' }}>{s.n}</div>
+                  <div style={{ fontFamily: "'Inter', sans-serif", color: '#8B5E3C', fontSize: '0.72rem', marginTop: '0.1rem' }}>{s.label}</div>
                 </div>
               ))}
             </div>
@@ -164,7 +173,7 @@ export default function CatalogClient({ creators }: Props) {
         <div style={{ position: 'relative', marginBottom: '1.25rem' }}>
           <span style={{
             position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)',
-            color: '#A8A8A4', fontSize: '1rem', pointerEvents: 'none',
+            color: '#C4873A', fontSize: '1rem', pointerEvents: 'none',
           }}>
             {aiSearching ? '◌' : '⌕'}
           </span>
@@ -174,10 +183,10 @@ export default function CatalogClient({ creators }: Props) {
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
             className="input-light"
-            style={{ paddingLeft: '2.5rem', fontSize: '0.95rem', border: '1.5px solid #EBEBEB' }}
+            style={{ paddingLeft: '2.5rem', fontSize: '0.95rem' }}
           />
           {aiSearching && (
-            <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#A8A8A4', fontSize: '0.75rem' }}>
+            <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#8B5E3C', fontSize: '0.75rem', fontFamily: "'Inter', sans-serif" }}>
               IA buscando...
             </span>
           )}
@@ -186,9 +195,9 @@ export default function CatalogClient({ creators }: Props) {
         {/* AI suggestion */}
         {aiSuggestion && (
           <div style={{
-            background: '#fff',
-            border: '1px solid #EBEBEB',
-            borderLeft: '3px solid #F5C518',
+            background: '#F0E6D3',
+            border: '1px solid #E8DCCC',
+            borderLeft: '3px solid #C4873A',
             borderRadius: '10px',
             padding: '0.75rem 1rem',
             marginBottom: '1rem',
@@ -196,8 +205,8 @@ export default function CatalogClient({ creators }: Props) {
             alignItems: 'flex-start',
             gap: '0.5rem',
           }}>
-            <span style={{ color: '#F5C518', fontSize: '0.9rem', flexShrink: 0 }}>✦</span>
-            <p style={{ color: '#6B6B6B', fontSize: '0.85rem', lineHeight: 1.6 }}>{aiSuggestion}</p>
+            <span style={{ color: '#C4873A', fontSize: '0.9rem', flexShrink: 0 }}>✦</span>
+            <p style={{ color: '#8B5E3C', fontSize: '0.85rem', lineHeight: 1.6, fontFamily: "'Inter', sans-serif" }}>{aiSuggestion}</p>
           </div>
         )}
 
@@ -210,20 +219,34 @@ export default function CatalogClient({ creators }: Props) {
               style={{
                 padding: '0.4rem 1rem',
                 borderRadius: '100px',
-                border: `1.5px solid ${category === cat ? '#0A0A0A' : '#EBEBEB'}`,
-                background: category === cat ? '#0A0A0A' : '#fff',
-                color: category === cat ? '#fff' : '#6B6B6B',
-                fontFamily: 'DM Sans',
+                border: `1.5px solid ${category === cat ? '#3D2314' : '#E8DCCC'}`,
+                background: category === cat ? '#3D2314' : '#F0E6D3',
+                color: category === cat ? '#FAF7F2' : '#8B5E3C',
+                fontFamily: "'Inter', sans-serif",
                 fontSize: '0.82rem',
                 fontWeight: category === cat ? 600 : 400,
                 cursor: 'pointer',
-                transition: 'all 0.18s',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                if (category !== cat) {
+                  (e.target as HTMLElement).style.background = '#C4873A';
+                  (e.target as HTMLElement).style.color = '#fff';
+                  (e.target as HTMLElement).style.borderColor = '#C4873A';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (category !== cat) {
+                  (e.target as HTMLElement).style.background = '#F0E6D3';
+                  (e.target as HTMLElement).style.color = '#8B5E3C';
+                  (e.target as HTMLElement).style.borderColor = '#E8DCCC';
+                }
               }}
             >
               {cat}
             </button>
           ))}
-          <span style={{ marginLeft: 'auto', color: '#A8A8A4', fontSize: '0.78rem', alignSelf: 'center' }}>
+          <span className="font-mono-metric" style={{ marginLeft: 'auto', color: '#C4873A', fontSize: '0.78rem', alignSelf: 'center' }}>
             {filtered.length} resultado{filtered.length !== 1 ? 's' : ''}
           </span>
         </div>
@@ -238,18 +261,18 @@ export default function CatalogClient({ creators }: Props) {
         ) : filtered.length === 0 ? (
           <div style={{ textAlign: 'center', padding: '5rem 1rem' }}>
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>◌</div>
-            <h3 style={{ fontFamily: 'Syne', fontWeight: 700, color: '#0A0A0A', marginBottom: '0.5rem' }}>
+            <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, color: '#3D2314', marginBottom: '0.5rem' }}>
               Sin resultados
             </h3>
-            <p style={{ color: '#A8A8A4', fontSize: '0.9rem' }}>
+            <p style={{ color: '#8B5E3C', fontSize: '0.9rem', fontFamily: "'Inter', sans-serif" }}>
               Prueba con otra búsqueda o usa la IA para encontrar tu creadora ideal.
             </p>
             <button
               onClick={() => setShowMatch(true)}
-              className="btn-gold"
+              className="btn-caramel"
               style={{ marginTop: '1.5rem', padding: '0.65rem 1.5rem', borderRadius: '10px', fontSize: '0.875rem' }}
             >
-              ✦ Usar IA para encontrar match
+              Usar IA para encontrar match
             </button>
           </div>
         ) : (

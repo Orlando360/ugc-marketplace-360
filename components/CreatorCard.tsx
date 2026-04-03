@@ -11,7 +11,6 @@ function fmt(n: number) {
 
 function calcScore(creator: Creator, searchTerm: string): number {
   if (!searchTerm.trim()) {
-    // base score from engagement + followers scale
     const engScore = Math.min(creator.engagement * 8, 40)
     const base = 55
     return Math.round(base + engScore)
@@ -42,7 +41,7 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
       style={{ cursor: 'pointer', overflow: 'hidden' }}
     >
       {/* Photo / Emoji header */}
-      <div className="creator-photo-wrap" style={{ height: '220px', background: '#F4F4F1' }}>
+      <div className="creator-photo-wrap" style={{ height: '220px', background: '#F0E6D3' }}>
         {creator.photo_url ? (
           <Image
             src={creator.photo_url}
@@ -58,7 +57,7 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '5rem',
-            background: 'linear-gradient(135deg, #F4F4F1 0%, #EBEBEB 100%)',
+            background: 'linear-gradient(135deg, #F0E6D3 0%, #E8DCCC 100%)',
           }}>
             {creator.emoji}
           </div>
@@ -68,11 +67,10 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
         <div className="creator-photo-overlay">
           <span style={{
             color: '#fff',
-            fontFamily: 'Syne',
-            fontWeight: 700,
+            fontFamily: "'Inter', sans-serif",
+            fontWeight: 600,
             fontSize: '0.82rem',
-            letterSpacing: '0.05em',
-            textTransform: 'uppercase',
+            letterSpacing: '0.04em',
           }}>
             Ver perfil completo →
           </span>
@@ -84,17 +82,21 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
             position: 'absolute',
             top: '0.75rem',
             right: '0.75rem',
-            background: '#fff',
-            border: '1px solid #A7F3D0',
-            color: '#065F46',
-            fontFamily: 'Syne',
+            background: 'rgba(196,135,58,0.15)',
+            backdropFilter: 'blur(6px)',
+            border: '1px solid rgba(196,135,58,0.3)',
+            color: '#3D2314',
+            fontFamily: "'Inter', sans-serif",
             fontSize: '0.68rem',
             fontWeight: 600,
             padding: '0.2rem 0.6rem',
             borderRadius: '100px',
-            boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.3rem',
           }}>
-            ● Disponible
+            <span className="pulse-dot" style={{ display: 'inline-block', width: 6, height: 6, borderRadius: '50%', background: '#C4873A' }} />
+            Disponible
           </div>
         )}
 
@@ -103,15 +105,15 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
           position: 'absolute',
           top: '0.75rem',
           left: '0.75rem',
-          background: 'rgba(10,10,10,0.75)',
-          backdropFilter: 'blur(6px)',
-          color: '#fff',
-          fontFamily: 'Syne',
+          background: '#FAF7F2',
+          border: '1px solid #C4873A',
+          color: '#8B5E3C',
+          fontFamily: "'Inter', sans-serif",
           fontSize: '0.68rem',
           fontWeight: 600,
           padding: '0.2rem 0.6rem',
           borderRadius: '100px',
-          letterSpacing: '0.05em',
+          letterSpacing: '0.04em',
         }}>
           {creator.category}
         </div>
@@ -122,17 +124,17 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
         {/* Name + handle */}
         <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.6rem' }}>
           <div>
-            <h3 style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: '1rem', color: '#0A0A0A', lineHeight: 1.2 }}>
+            <h3 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1rem', color: '#3D2314', lineHeight: 1.2 }}>
               {creator.name}
             </h3>
-            <p style={{ color: '#A8A8A4', fontSize: '0.78rem', marginTop: '0.1rem' }}>@{creator.handle}</p>
+            <p style={{ color: '#B8977A', fontSize: '0.78rem', marginTop: '0.1rem', fontFamily: "'Inter', sans-serif" }}>@{creator.handle}</p>
           </div>
           {/* Match score */}
           <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: '0.75rem' }}>
-            <div style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.1rem', color: score >= 80 ? '#0A0A0A' : '#6B6B6B' }}>
+            <div className="font-mono-metric" style={{ fontWeight: 400, fontSize: '1.1rem', color: score >= 80 ? '#3D2314' : '#8B5E3C' }}>
               {score}%
             </div>
-            <div style={{ fontSize: '0.62rem', color: '#A8A8A4', fontFamily: 'DM Sans' }}>match</div>
+            <div style={{ fontSize: '0.62rem', color: '#B8977A', fontFamily: "'Inter', sans-serif" }}>match</div>
           </div>
         </div>
 
@@ -148,13 +150,14 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
             { label: 'Engagement', value: `${creator.engagement}%` },
           ].map((s) => (
             <div key={s.label} style={{
-              background: '#F4F4F1',
+              background: '#FAF7F2',
+              border: '1px solid #E8DCCC',
               borderRadius: '10px',
               padding: '0.625rem',
               textAlign: 'center',
             }}>
-              <div style={{ fontFamily: 'Syne', fontWeight: 700, fontSize: '0.95rem', color: '#0A0A0A' }}>{s.value}</div>
-              <div style={{ fontSize: '0.68rem', color: '#A8A8A4', marginTop: '0.1rem' }}>{s.label}</div>
+              <div className="font-mono-metric" style={{ fontWeight: 400, fontSize: '0.95rem', color: '#3D2314' }}>{s.value}</div>
+              <div style={{ fontSize: '0.68rem', color: '#B8977A', marginTop: '0.1rem', fontFamily: "'Inter', sans-serif" }}>{s.label}</div>
             </div>
           ))}
         </div>
@@ -169,13 +172,13 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
         {/* Price + CTA */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <span style={{ color: '#A8A8A4', fontSize: '0.72rem', fontFamily: 'DM Sans' }}>Desde</span>
-            <div style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.15rem', color: '#0A0A0A', letterSpacing: '-0.02em' }}>
+            <span style={{ color: '#B8977A', fontSize: '0.72rem', fontFamily: "'Inter', sans-serif" }}>Desde</span>
+            <div className="font-mono-metric" style={{ fontWeight: 400, fontSize: '1.15rem', color: '#3D2314', letterSpacing: '-0.02em' }}>
               ${creator.price.toLocaleString('es-CO')}
             </div>
           </div>
           <button
-            className="btn-gold"
+            className="btn-caramel"
             style={{ padding: '0.5rem 1.1rem', borderRadius: '8px', fontSize: '0.82rem' }}
           >
             Contratar

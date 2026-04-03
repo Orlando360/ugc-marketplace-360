@@ -18,9 +18,9 @@ export default function Navbar() {
 
   return (
     <nav style={{
-      background: isAdmin ? '#0A0A0A' : '#FFFFFF',
-      borderBottom: `1px solid ${scrolled ? (isAdmin ? 'rgba(245,197,24,0.12)' : '#EBEBEB') : 'transparent'}`,
-      boxShadow: scrolled ? '0 1px 12px rgba(0,0,0,0.06)' : 'none',
+      background: isAdmin ? '#3D2314' : '#FAF7F2',
+      borderBottom: `1px solid ${scrolled ? (isAdmin ? 'rgba(196,135,58,0.2)' : '#F0E6D3') : 'transparent'}`,
+      boxShadow: scrolled ? '0 1px 12px rgba(61,35,20,0.06)' : 'none',
       position: 'sticky',
       top: 0,
       zIndex: 50,
@@ -31,21 +31,21 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'baseline', gap: '0.35rem' }}>
-            <span style={{ fontFamily: 'Syne', fontWeight: 800, fontSize: '1.1rem', color: isAdmin ? '#fff' : '#0A0A0A', letterSpacing: '-0.02em' }}>
+            <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: '1.2rem', color: isAdmin ? '#FAF7F2' : '#3D2314', letterSpacing: '-0.01em' }}>
               UGC
             </span>
-            <span style={{ fontFamily: 'Syne', fontWeight: 400, fontSize: '1.1rem', color: isAdmin ? 'rgba(255,255,255,0.4)' : '#A8A8A4' }}>
+            <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 400, fontSize: '1.2rem', color: isAdmin ? 'rgba(250,247,242,0.4)' : '#B8977A' }}>
               360
             </span>
             <span style={{
-              background: '#F5C518',
-              color: '#0A0A0A',
-              fontFamily: 'Syne',
-              fontWeight: 700,
-              fontSize: '0.6rem',
+              background: '#C4873A',
+              color: '#FFFFFF',
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 600,
+              fontSize: '0.58rem',
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              padding: '0.1rem 0.4rem',
+              padding: '0.12rem 0.45rem',
               borderRadius: '4px',
               marginLeft: '0.15rem',
             }}>
@@ -57,15 +57,15 @@ export default function Navbar() {
           <Link
             href="/admin"
             style={{
-              fontFamily: 'Syne',
+              fontFamily: "'Inter', sans-serif",
               fontSize: '0.82rem',
               fontWeight: 600,
-              color: isAdmin ? '#F5C518' : '#6B6B6B',
+              color: isAdmin ? '#C4873A' : '#8B5E3C',
               textDecoration: 'none',
               padding: '0.4rem 0.75rem',
               borderRadius: '8px',
-              background: isAdmin ? 'rgba(245,197,24,0.08)' : '#F4F4F1',
-              border: isAdmin ? '1px solid rgba(245,197,24,0.2)' : '1px solid transparent',
+              background: isAdmin ? 'rgba(196,135,58,0.08)' : '#F0E6D3',
+              border: isAdmin ? '1px solid rgba(196,135,58,0.2)' : '1px solid #C4873A',
               transition: 'all 0.15s',
               letterSpacing: '0.02em',
             }}
