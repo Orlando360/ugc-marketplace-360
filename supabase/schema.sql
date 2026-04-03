@@ -36,6 +36,7 @@ create table if not exists public.ugc_creators (
   engagement numeric(5,2) not null default 0,
   price integer not null default 0,
   emoji text default '✨',
+  photo_url text,
   bio text,
   tags text[] default '{}',
   available boolean default true,

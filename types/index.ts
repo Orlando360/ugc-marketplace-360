@@ -11,6 +11,7 @@ export interface Creator {
   tags: string[]
   available: boolean
   packages: Package[]
+  photo_url: string | null
   created_at: string
 }
 

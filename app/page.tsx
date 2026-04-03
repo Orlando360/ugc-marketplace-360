@@ -10,21 +10,10 @@ export default async function HomePage() {
     .eq('available', true)
     .order('created_at', { ascending: false })
 
-  const { data: { user } } = await supabase.auth.getUser()
-  let role = null
-  if (user) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single()
-    role = profile?.role
-  }
-
   return (
-    <div className="min-h-screen" style={{ background: '#0A0A0A' }}>
-      <Navbar user={user} role={role} />
-      <CatalogClient creators={creators || []} userEmail={user?.email || null} />
+    <div className="min-h-screen" style={{ background: '#FAFAF8' }}>
+      <Navbar />
+      <CatalogClient creators={creators || []} />
     </div>
   )
 }

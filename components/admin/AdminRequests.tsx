@@ -30,7 +30,7 @@ export default function AdminRequests({ requests, setRequests }: Props) {
 
   if (requests.length === 0) {
     return (
-      <div style={{ textAlign: 'center', padding: '4rem', color: 'rgba(255,255,255,0.3)' }}>
+      <div style={{ textAlign: 'center', padding: '4rem', color: '#A8A8A4' }}>
         <p style={{ fontFamily: 'Syne', fontSize: '1.1rem' }}>No hay solicitudes aún</p>
       </div>
     )
@@ -42,8 +42,8 @@ export default function AdminRequests({ requests, setRequests }: Props) {
         const creator = req.ugc_creators as { name: string; emoji: string; category: string } | undefined
         return (
           <div key={req.id} style={{
-            background: '#111',
-            border: '1px solid rgba(245,197,24,0.1)',
+            background: '#fff',
+            border: '1px solid #EBEBEB',
             borderRadius: '14px',
             padding: '1.25rem',
           }}>
@@ -53,19 +53,19 @@ export default function AdminRequests({ requests, setRequests }: Props) {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}>
                   {creator && <span style={{ fontSize: '1.5rem' }}>{creator.emoji}</span>}
                   <div>
-                    <p style={{ fontFamily: 'Syne', color: '#fff', fontWeight: 600, fontSize: '0.95rem' }}>
+                    <p style={{ fontFamily: 'Syne', color: '#0A0A0A', fontWeight: 600, fontSize: '0.95rem' }}>
                       {req.client_name}
                     </p>
-                    <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>{req.client_email}</p>
+                    <p style={{ color: '#A8A8A4', fontSize: '0.8rem' }}>{req.client_email}</p>
                   </div>
                 </div>
 
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
                   {creator && (
                     <span style={{
-                      background: 'rgba(255,255,255,0.04)',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      color: 'rgba(255,255,255,0.5)',
+                      background: '#F4F4F1',
+                      border: '1px solid #EBEBEB',
+                      color: '#6B6B6B',
                       borderRadius: '6px',
                       fontSize: '0.75rem',
                       padding: '0.15rem 0.6rem',
@@ -74,9 +74,9 @@ export default function AdminRequests({ requests, setRequests }: Props) {
                     </span>
                   )}
                   <span style={{
-                    background: 'rgba(245,197,24,0.06)',
-                    border: '1px solid rgba(245,197,24,0.15)',
-                    color: '#F5C518',
+                    background: '#FFFBEB',
+                    border: '1px solid #FDE68A',
+                    color: '#92400E',
                     borderRadius: '6px',
                     fontSize: '0.75rem',
                     padding: '0.15rem 0.6rem',
@@ -86,7 +86,7 @@ export default function AdminRequests({ requests, setRequests }: Props) {
                 </div>
 
                 <p style={{
-                  color: 'rgba(255,255,255,0.55)',
+                  color: '#6B6B6B',
                   fontSize: '0.85rem',
                   lineHeight: 1.6,
                   maxWidth: '500px',
@@ -94,14 +94,14 @@ export default function AdminRequests({ requests, setRequests }: Props) {
                   {req.brief}
                 </p>
 
-                <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.75rem', marginTop: '0.5rem' }}>
+                <p style={{ color: '#A8A8A4', fontSize: '0.75rem', marginTop: '0.5rem' }}>
                   {new Date(req.created_at).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })}
                 </p>
               </div>
 
               {/* Status selector */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                <label style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.72rem', fontFamily: 'Syne', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                <label style={{ color: '#A8A8A4', fontSize: '0.72rem', fontFamily: 'Syne', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                   Estado
                 </label>
                 <div style={{ display: 'flex', gap: '0.4rem' }}>
