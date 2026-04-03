@@ -42,26 +42,31 @@ export default function CreatorCard({ creator, onClick, searchTerm = '' }: Props
     >
       {/* Photo / Emoji header */}
       <div className="creator-photo-wrap" style={{ height: '220px', background: '#F0E6D3' }}>
-        {creator.photo_url ? (
-          <Image
-            src={creator.photo_url}
-            alt={creator.name}
-            fill
-            style={{ objectFit: 'cover' }}
-            sizes="(max-width: 768px) 100vw, 380px"
-          />
-        ) : (
-          <div style={{
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '5rem',
-            background: 'linear-gradient(135deg, #F0E6D3 0%, #E8DCCC 100%)',
-          }}>
-            {creator.emoji}
-          </div>
-        )}
+        {(() => {
+          const handle = creator.handle?.replace(/^@/, '').trim()
+          const imgSrc = creator.photo_url || (handle ? `https://unavatar.io/instagram/${handle}` : null)
+          return imgSrc ? (
+            <Image
+              src={imgSrc}
+              alt={creator.name}
+              fill
+              style={{ objectFit: 'cover' }}
+              sizes="(max-width: 768px) 100vw, 380px"
+              unoptimized={!creator.photo_url}
+            />
+          ) : (
+            <div style={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '5rem',
+              background: 'linear-gradient(135deg, #F0E6D3 0%, #E8DCCC 100%)',
+            }}>
+              {creator.emoji}
+            </div>
+          )
+        })()}
 
         {/* Hover overlay */}
         <div className="creator-photo-overlay">
