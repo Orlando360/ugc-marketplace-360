@@ -13,7 +13,7 @@ export async function GET() {
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
-    const { error } = await supabase.from('creators').select('id').limit(1)
+    const { error } = await supabase.from('ugc_creators').select('id').limit(1)
     if (error?.message?.includes('schema cache') || error?.message?.includes('does not exist')) {
       checks.supabase = 'connected (table pending setup)'
     } else if (error) {
