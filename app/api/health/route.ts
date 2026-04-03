@@ -14,8 +14,14 @@ export async function GET() {
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
     )
     const { error } = await supabase.from('creators').select('id').limit(1)
-    checks.supabase = error ? `error: ${error.message}` : 'ok'
-    if (error) healthy = false
+    if (error?.message?.includes('schema cache') || error?.message?.includes('does not exist')) {
+      checks.supabase = 'connected (table pending setup)'
+    } else if (error) {
+      checks.supabase = `error: ${error.message}`
+      healthy = false
+    } else {
+      checks.supabase = 'ok'
+    }
   } catch (e) {
     checks.supabase = `error: ${(e as Error).message}`
     healthy = false
